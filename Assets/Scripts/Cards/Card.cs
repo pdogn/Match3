@@ -6,5 +6,5 @@ public abstract class Card : MonoBehaviour
 {
     public abstract void DoTapped();
 
-    public abstract void MoveToTarget();
+    public abstract void MoveToTarget(float arriveTime);
 }

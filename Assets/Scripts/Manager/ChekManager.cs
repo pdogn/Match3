@@ -2,28 +2,56 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChekManager : MonoBehaviour
+public class ChekManager : Singleton<ChekManager>
 {
     [SerializeField] Transform Chek;
-    [SerializeField] List<Transform> listChek;
-    [SerializeField] List<Transform> listChekAvaiable;
+    public List<Transform> listChekPos;
+    public List<Transform> listChekObj;
+    //public List<Transform> listChekAvaiable;
     // Start is called before the first frame update
     void Start()
     {
         AutoAddListChek();
-        listChekAvaiable = listChek;
+        //listChekAvaiable = listChekPos;
     }
-
     
-
     void AutoAddListChek()
     {
         foreach (Transform child in Chek)
         {
-            if (!listChek.Contains(child))
+            if (!listChekPos.Contains(child))
             {
-                listChek.Add(child);
+                listChekPos.Add(child);
             }
         }
     }
+
+    public int FindBottomOfList()
+    {
+        int countCardUsed = listChekObj.Count;
+
+        return countCardUsed;
+    }
+
+    //public int FindPos(int _type)
+    //{
+    //    if(listChekObj.Count < 2)
+    //    {
+    //        return FindBottomOfList();
+    //    }
+    //    if(listChekObj.Count > 1)
+    //    {
+    //        CardCon objSameType;
+    //        for(int i = listChekObj.Count - 1; i >= 0; i--)
+    //        {
+    //            if (listChekObj[i].GetComponent<CardCon>().type == _type)
+    //            {
+    //                objSameType = listChekObj[i].GetComponent<CardCon>();
+    //                break;
+    //            }
+    //        }
+
+    //        objSameType.tar
+    //    }
+    //}
 }
