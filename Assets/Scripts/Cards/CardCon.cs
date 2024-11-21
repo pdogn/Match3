@@ -27,15 +27,16 @@ public class CardCon : Card
         transform.DOKill();
         transform.DOMove(target.position, arriveTime).SetEase(Ease.Linear).OnComplete(() =>
         {
-
+            ChekManager.Instance.DeleteWhenMatch3(type);
         });
     }
 
 
     public void AddToListChekObj()
     {
-        xIndex = ChekManager.Instance.FindBottomOfList();
+        xIndex = ChekManager.Instance.FindPos(type);
         target = ChekManager.Instance.listChekPos[xIndex];
         ChekManager.Instance.listChekObj.Add(this.gameObject.transform);
     }
+
 }
