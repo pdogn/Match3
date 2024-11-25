@@ -9,6 +9,14 @@ public class CardCon : Card
     public Transform target;
     public int xIndex;
 
+    public int id;
+    public int oldX;
+    public int oldY;
+    public int level;
+
+    public List<int> higherIds;
+    public List<int> lowerIds;
+
     //public ChekManager chekManager;
     public override void DoTapped()
     {
@@ -37,6 +45,14 @@ public class CardCon : Card
         xIndex = ChekManager.Instance.FindPos(type);
         target = ChekManager.Instance.listChekPos[xIndex];
         ChekManager.Instance.listChekObj.Add(this.gameObject.transform);
+    }
+
+    public void Init(CardCon cc)
+    {
+        oldX = cc.oldX;
+        oldY = cc.oldY;
+        higherIds = cc.higherIds;
+        lowerIds = cc.lowerIds;
     }
 
 }
