@@ -9,8 +9,8 @@ public class Spawn : MonoBehaviour
 
     public int chessWidthNum;
     public int chessHeightNum;
-    public int chessItemWidth;
-    public int chessItemHeight;
+    public float chessItemWidth;
+    public float chessItemHeight;
     public int slotNum;
 
     public int ClearableNum;
@@ -23,11 +23,18 @@ public class Spawn : MonoBehaviour
     public int blockTypeNum;
     public int blockBorderStep;
 
-    
+    private void Start()
+    {
+        ABC();
+    }
+
 
     void ABC()
     {
         int totalBlockNum = LeftRandomBlocks + RightRandomBlocks + LevelNum * LevelBlockNum;
+        int blockUnit = ClearableNum * blockTypeNum;
+        float dd = totalBlockNum % blockUnit;
+        if (totalBlockNum % blockUnit != 0) totalBlockNum = ((Mathf.FloorToInt(totalBlockNum / blockUnit) + 1) * blockUnit);
         List<CardCon> blockArr = new List<CardCon>();
         for (int i = 0; i < totalBlockNum; i++)
         {
@@ -152,12 +159,20 @@ public class Spawn : MonoBehaviour
                 if (isRandom)
                 {
                     // Tạo tọa độ ngẫu nhiên
-                    do
+                    nx = Random.Range(minWidth, maxWidth + 1);
+                    ny = Random.Range(minHeight, maxHeight + 1);
+                    key = $"{nx}_{ny}";
+                    
+                    if (blockPosSet.Contains(key))
                     {
-                        nx = Random.Range(minWidth, maxWidth + 1);
-                        ny = Random.Range(minHeight, maxHeight + 1);
-                        key = $"{nx}_{ny}";
-                    } while (blockPosSet.Contains(key));
+                        while (true)
+                        {
+                            nx = Random.Range(minWidth, maxWidth + 1);
+                            ny = Random.Range(minHeight, maxHeight + 1);
+                            key = $"{nx}_{ny}";
+                            if (!blockPosSet.Contains(key)) break;
+                        }
+                    }
                 }
                 else
                 {
@@ -190,7 +205,7 @@ public class Spawn : MonoBehaviour
                             var topBlock = nearbyBlocks[nearbyBlocks.Count - 1];
                             if (topBlock.id == block.id) continue;
 
-                            maxLevel = Mathf.Max(maxLevel, topBlock.level);
+                            maxLevel = (int)Mathf.Max(maxLevel, topBlock.level);
                             block.lowerIds.Add(topBlock.id);
                             topBlock.higherIds.Add(block.id);
                         }
@@ -202,7 +217,7 @@ public class Spawn : MonoBehaviour
                 block.oldY = ny;
                 block.level = maxLevel + 1;
                 block.oldX = nx * chessItemWidth;
-                block.oldY = ny * chessItemHeight;
+                block.oldY = (int)(ny * chessItemHeight);
 
                 // Thêm vào danh sách hiển thị
                 chessBlocks.Add(block);
@@ -216,7 +231,7 @@ public class Spawn : MonoBehaviour
         // Render các khối bàn cờ
         foreach (var block in chessBlocks)
         {
-            GameObject node = Instantiate(prefabs[0], boardSlotNode);
+            GameObject node = Instantiate(prefabs[0], this.transform);
             node.GetComponent<CardCon>().Init(block);
         }
 

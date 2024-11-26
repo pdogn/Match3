@@ -10,9 +10,9 @@ public class CardCon : Card
     public int xIndex;
 
     public int id;
-    public int oldX;
+    public float oldX;
     public int oldY;
-    public int level;
+    public float level;
 
     public List<int> higherIds;
     public List<int> lowerIds;
@@ -53,6 +53,8 @@ public class CardCon : Card
         oldY = cc.oldY;
         higherIds = cc.higherIds;
         lowerIds = cc.lowerIds;
+        //
+        this.transform.localPosition = new Vector3(oldX, oldY, this.transform.position.z);
     }
 
 }
